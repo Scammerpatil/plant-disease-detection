@@ -1,5 +1,6 @@
 "use client";
 import { IconClipboardText, IconCloudUpload } from "@tabler/icons-react";
+import Markdown from "react-markdown";
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -110,11 +111,11 @@ const PredictFromImage = () => {
         <div className="max-w-3xl mx-auto mt-10">
           <div className="card bg-base-200 shadow-lg">
             <div className="card-body space-y-4">
-              <h2 className="card-title text-2xl text-accent font-bold text-center">
+              <h2 className="card-title text-2xl text-accent font-bold text-center flex items-center justify-between">
                 {diseaseInfo.crop} - {diseaseInfo.disease}
                 <span className="ml-2">
                   <div
-                    className="radial-progress text-primary"
+                    className="radial-progress text-accent text-base"
                     style={
                       {
                         "--value": response.probability,
@@ -128,7 +129,7 @@ const PredictFromImage = () => {
                 </span>
               </h2>
 
-              <div>
+              <div className="mt-4 bg-base-100 p-4 rounded-lg">
                 <p className="text-lg font-semibold">Causes:</p>
                 <ul className="list-disc list-inside ml-4">
                   {diseaseInfo.causes.map((cause, idx) => (
@@ -137,7 +138,7 @@ const PredictFromImage = () => {
                 </ul>
               </div>
 
-              <div>
+              <div className="mt-4 bg-base-100 p-4 rounded-lg">
                 <p className="text-lg font-semibold">Remedies:</p>
                 <ul className="list-disc list-inside ml-4">
                   {diseaseInfo.remedies.map((remedy, idx) => (
@@ -146,11 +147,11 @@ const PredictFromImage = () => {
                 </ul>
               </div>
 
-              <div>
-                <p className="text-base">
-                  <span className="font-semibold">Recommended Pesticide:</span>{" "}
-                  {response?.pesticide}
-                </p>
+              <div className="mt-4 bg-base-100 p-4 rounded-lg">
+                <span className="font-semibold text-lg">
+                  Recommended Pesticide:
+                </span>{" "}
+                <Markdown>{response?.pesticide}</Markdown>
               </div>
             </div>
           </div>

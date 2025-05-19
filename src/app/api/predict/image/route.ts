@@ -1,9 +1,11 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs";
 
 const execAsync = promisify(exec);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -28,12 +30,18 @@ export async function POST(req: NextRequest) {
         { status: 200 }
       );
     }
+
     const rawRes = stdout
       .trim()
       .split("\n")
       .slice(2)
       .map((line) => line.replace(/\r$/, ""));
     const result = JSON.parse(rawRes[0]);
+    const chat = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const pesticide = await chat.generateContent(
+      `You are an AI assistant specialized in crop disease detection and agricultural support. Based on the following information, suggest a complete treatment plan for the disease: ${result.disease}.\n\nPesticide: ${result.pesticide}\n\nPlease provide a detailed treatment plan, including the pesticide name, dosage, and application method.`
+    );
+    result.pesticide = pesticide.response.text();
     return NextResponse.json({ result: result }, { status: 200 });
   } catch (error) {
     console.log(error);

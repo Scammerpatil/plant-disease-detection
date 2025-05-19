@@ -23,12 +23,6 @@ export default function Home() {
             Get Started
             <IconCircleChevronRight />
           </a>
-          <a
-            href="/about"
-            className="btn btn-outline text-base font-medium text-center rounded-lg mr-4"
-          >
-            Learn More
-          </a>
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img src="/bg.png" alt="Chef Icon" />
