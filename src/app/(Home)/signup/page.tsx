@@ -27,6 +27,29 @@ const SignUp = () => {
       toast.error("Please fill all the fields");
       return;
     }
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (formData.contact.length !== 10 || isNaN(Number(formData.contact))) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      toast.error(
+        "Password must be at least 6 characters long and contain both letters and numbers"
+      );
+      return;
+    }
+    if (!formData.terms) {
+      toast.error("You must agree to the terms and conditions");
+      return;
+    }
     try {
       const response = axios.post("/api/auth/signup", { formData });
       toast.promise(response, {

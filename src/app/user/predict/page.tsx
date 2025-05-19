@@ -149,7 +149,7 @@ const PredictFromImage = () => {
 
               <div className="mt-4 bg-base-100 p-4 rounded-lg">
                 <span className="font-semibold text-lg">
-                  Recommended Pesticide:
+                  Recommended Pesticide and Treatment Plan:
                 </span>{" "}
                 <Markdown>{response?.pesticide}</Markdown>
               </div>
