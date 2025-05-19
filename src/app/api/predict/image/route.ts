@@ -19,14 +19,21 @@ export async function POST(req: NextRequest) {
     const filePath = "python/upload/plant.jpg";
     fs.writeFileSync(filePath, Buffer.from(fileBuffer));
     var { stdout } = await execAsync(`py -3.12 python/image_predict.py`);
+    if (stdout.includes("Not a leaf image")) {
+      return NextResponse.json({ result: "Not a leaf image" }, { status: 200 });
+    }
+    if (stdout.includes("No disease detected")) {
+      return NextResponse.json(
+        { result: "No disease detected" },
+        { status: 200 }
+      );
+    }
     const rawRes = stdout
       .trim()
       .split("\n")
       .slice(2)
       .map((line) => line.replace(/\r$/, ""));
-    console.log(rawRes[0]);
     const result = JSON.parse(rawRes[0]);
-
     return NextResponse.json({ result: result }, { status: 200 });
   } catch (error) {
     console.log(error);

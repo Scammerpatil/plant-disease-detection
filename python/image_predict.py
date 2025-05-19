@@ -3,6 +3,7 @@ import locale
 import json
 import sys
 import numpy as np
+import cv2
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image
@@ -88,7 +89,6 @@ def predict_diseases(image_path):
     img_array = image.img_to_array(img)
     img_array = img_array / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-
     predictions = model.predict(img_array)
     predicted_class = np.argmax(predictions, axis=1)[0]
     predicted_prob = int(round(float(np.max(predictions)) * 100, 2))
@@ -100,10 +100,30 @@ def predict_diseases(image_path):
         "pesticide": pesticide
     }
 
+# ----------------- Check if Image is of Leaf -----------------
+def detect_leaf(image):
+    """ Checks if the image contains a leaf using color thresholding. """
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    lower_green = np.array([25, 40, 40], dtype=np.uint8)
+    upper_green = np.array([90, 255, 255], dtype=np.uint8)
+
+    mask = cv2.inRange(hsv, lower_green, upper_green)
+    leaf_pixels = np.count_nonzero(mask)
+
+    return leaf_pixels > (0.1 * image.size)
+
 # ----------------- Run Prediction -----------------
 if __name__ == "__main__":
-    prediction = predict_diseases(IMAGE_PATH)
-    if prediction:
-        print(json.dumps(prediction, ensure_ascii=False))
-    else:
-        print("No disease detected")
+    if not os.path.exists(IMAGE_PATH):
+        print("Image not found")
+        sys.exit(1)
+    # Check if the image is a leaf
+    img = cv2.imread(IMAGE_PATH)
+    if not detect_leaf(img):
+        print("Not a leaf image")
+    else: 
+        prediction = predict_diseases(IMAGE_PATH)
+        if prediction:
+            print(json.dumps(prediction, ensure_ascii=False))
+        else:
+            print("No disease detected")

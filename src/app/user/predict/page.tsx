@@ -24,6 +24,14 @@ const PredictFromImage = () => {
       toast.promise(res, {
         loading: "Predicting...",
         success: (data) => {
+          if (data.data.result === "Not a leaf image") {
+            setResponse(null);
+            toast.error("Not a leaf image.");
+            return `Please upload a leaf image.`;
+          } else if (data.data.result === "No disease detected") {
+            setResponse(null);
+            return `No disease detected.`;
+          }
           setResponse(data.data.result);
           return `Prediction complete!`;
         },
@@ -83,7 +91,7 @@ const PredictFromImage = () => {
           <img
             src={URL.createObjectURL(file)}
             alt="Uploaded Preview"
-            className="w-full max-w-md rounded-lg shadow-lg h-52 object-cover"
+            className="w-full max-w-md rounded-lg shadow-lg h-52 object-contain bg-base-200"
           />
         </div>
       )}
@@ -141,7 +149,7 @@ const PredictFromImage = () => {
               <div>
                 <p className="text-base">
                   <span className="font-semibold">Recommended Pesticide:</span>{" "}
-                  {response.pesticide}
+                  {response?.pesticide}
                 </p>
               </div>
             </div>
