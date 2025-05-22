@@ -99,7 +99,7 @@ export default function ChatBotPage() {
             <input
               type="text"
               className="input input-primary w-full join-item"
-              placeholder="Ask me about sleep..."
+              placeholder="Ask me about crop diseases..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
