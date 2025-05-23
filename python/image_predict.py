@@ -22,7 +22,7 @@ diseases = [
     'Orange___Haunglongbing_(Citrus_greening)', 'Soybean___healthy', 
     'Squash___Powdery_mildew', 'Potato___healthy', 
     'Corn_(maize)___Northern_Leaf_Blight', 'Tomato___Early_blight', 
-    'Tomato___Septoria_leaf_spot', 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
+    'Tomato___Septoria_leaf_spot', 'Corn_(maize)___Cercospora_leaf_spot_Gray_leaf_spot',
     'Strawberry___Leaf_scorch', 'Peach___healthy', 'Apple___Apple_scab',
     'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Bacterial_spot',
     'Apple___Black_rot', 'Blueberry___healthy',
